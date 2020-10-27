@@ -14,7 +14,7 @@ CarRentalService is a backend application which provides REST APIs to access the
 
 ```
 git clone "https://github.com/sateekot/CarRentalService.git"
-cd CarRentalService
+cd CarRentalService/CarRentalService
 mvn clean install
 
 ```

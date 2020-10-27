@@ -85,14 +85,14 @@ public class CarRentalService implements RentalService {
 				long noOfEntriesWithSameDates = listOfAvailableCarTimings.stream().filter(isFromDateInRange.or(isToDateInRange).or(isOutsideDates)).count();
 				if(noOfEntriesWithSameDates == 0) {
 					listOfAvailableCarTimings.add(carRentalDetails);
-					carAvailabilityInventory.put(plateNumber, listOfAvailableCarTimings);
+					carAvailabilityInventory.putIfAbsent(plateNumber, listOfAvailableCarTimings);
 				} else {
 					throw new BusinessServiceException("Car is alredy added to inventory with overlapping dates. Please provide valid dates.");
 				}
 			} else {
 				List<CarRentalDetails> listOfAvailableCars = new ArrayList<>();
 				listOfAvailableCars.add(carRentalDetails);
-				carAvailabilityInventory.put(plateNumber, listOfAvailableCars);
+				carAvailabilityInventory.putIfAbsent(plateNumber, listOfAvailableCars);
 			}
 		}
 		LOGGER.info("Car availability successfully added to inventory with plateNumber = "+plateNumber+", from = "+from
@@ -173,7 +173,7 @@ public class CarRentalService implements RentalService {
 						&& (toDateTime.isEqual(carDetails.getEndTime()) || toDateTime.isBefore(carDetails.getEndTime()))  
 						&& carDetails.getCarBookingStatus().equals(CarBookingStatus.AVAILABLE)) {
 					carDetails.setCarBookingStatus(CarBookingStatus.BOOKED);
-					carAvailabilityInventory.put(plateNumber, listOfAvailableTimings);
+					carAvailabilityInventory.putIfAbsent(plateNumber, listOfAvailableTimings);
 					return true;
 				}
 			}	
